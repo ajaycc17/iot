@@ -1,0 +1,122 @@
+1. psql -U postgres -h localhost
+
+
+2. psql -U postgres -h localhost -d sensordata
+
+
+
+
+CREATE DATABASE Weatherdata;
+
+
+\c sensordata
+
+
+
+CREATE EXTENSION IF NOT EXISTS timescaledb;
+
+
+
+CREATE TABLE weather_table (id INT NOT NULL, time TIMESTAMPTZ NOT NULL, temperature_site1 DOUBLE PRECISION NULL, humidity_site1 DOUBLE PRECISION NULL, temperature_site2 DOUBLE PRECISION NULL, humidity_site2 DOUBLE PRECISION NULL);
+
+
+
+
+SELECT create_hypertable('weather_table', 'time');
+
+
+
+INSERT INTO weather_table(id, time, temperature_site1, humidity_site1, temperature_site2, humidity_site2) VALUES (0,'01/03/2018 00:00:00',NULL,NULL,23.1,61.6);
+INSERT INTO weather_table(id, time, temperature_site1, humidity_site1, temperature_site2, humidity_site2) VALUES (1,'01/03/2018 00:30:00',21.0,68.0,22.9,61.1);
+INSERT INTO weather_table(id, time, temperature_site1, humidity_site1, temperature_site2, humidity_site2) VALUES (2,'01/03/2018 01:00:00',20.0,73.0,23.0,61.6);
+INSERT INTO weather_table(id, time, temperature_site1, humidity_site1, temperature_site2, humidity_site2) VALUES (3,'01/03/2018 01:30:00',20.0,73.0,22.9,62.5);
+INSERT INTO weather_table(id, time, temperature_site1, humidity_site1, temperature_site2, humidity_site2) VALUES (4,'01/03/2018 02:00:00',20.0,73.0,22.4,63.4);
+INSERT INTO weather_table(id, time, temperature_site1, humidity_site1, temperature_site2, humidity_site2) VALUES (5,'01/03/2018 02:30:00',20.0,70.0,22.0,63.8);
+INSERT INTO weather_table(id, time, temperature_site1, humidity_site1, temperature_site2, humidity_site2) VALUES (6,'01/03/2018 03:00:00',19.0,78.0,21.7,64.3);
+INSERT INTO weather_table(id, time, temperature_site1, humidity_site1, temperature_site2, humidity_site2) VALUES (7,'01/03/2018 03:30:00',19.0,78.0,21.5,64.7);
+INSERT INTO weather_table(id, time, temperature_site1, humidity_site1, temperature_site2, humidity_site2) VALUES (8,'01/03/2018 04:00:00',19.0,78.0,21.5,65.2);
+INSERT INTO weather_table(id, time, temperature_site1, humidity_site1, temperature_site2, humidity_site2) VALUES (9,'01/03/2018 04:30:00',19.0,78.0,21.1,66.5);
+
+
+
+SELECT COUNT(*) FROM conditions;
+
+
+
+SELECT * FROM weather_table3 ORDER BY time DESC LIMIT 5 WHERE id<5;
+
+
+
+COPY conditions FROM 'C:\Users\ajayc\Downloads\weather_data_2sites.csv' WITH (FORMAT csv);
+
+
+
+psql \copy conditions FROM C:\Users\ajayc\Downloads\try\weather_data_2sites.csv WITH CSV
+
+
+psql -U postgres -h localhost
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INSERT INTO weather_table3(id, time, temperature_site1, humidity_site1, temperature_site2, humidity_site2) VALUES (0,01/03/2018 00:00:00,NULL,NULL,23.1,61.6);
+INSERT INTO weather_table3(id, time, temperature_site1, humidity_site1, temperature_site2, humidity_site2) VALUES (1,'01/03/2018 00:30:00',21.0,68.0,22.9,61.1);
+.
+.
+.
+INSERT INTO weather_table3(id, time, temperature_site1, humidity_site1, temperature_site2, humidity_site2) VALUES (8,'01/03/2018 04:00:00',19.0,78.0,21.5,65.2);
+INSERT INTO weather_table3(id, time, temperature_site1, humidity_site1, temperature_site2, humidity_site2) VALUES (9,'01/03/2018 04:30:00',19.0,78.0,21.1,66.5);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import pandas as pd
+
+# read csv file
+df = pd.read_csv('weather_data_2sites.csv')
+
+# convert to datetime format
+df['timestamp'] = pd.to_datetime(df.timestamp)
+
+# get day first
+df['timestamp'] = df['timestamp'].dt.strftime('%d/%m/%Y %H:%M:%S')
+
+# rename id column
+df.rename( columns={'Unnamed: 0':'id'}, inplace=True )
+
+# save the modified csv data
+df.to_csv('weather_data_2sites.csv', index=False)
