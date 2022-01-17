@@ -1,7 +1,7 @@
 import pandas as pd
 
 # read csv file
-df = pd.read_csv('weather_data_2sites.csv')
+df = pd.read_csv('weather_data_2sites_original.csv')
 
 # convert to datetime format
 df['timestamp'] = pd.to_datetime(df.timestamp)
